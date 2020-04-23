@@ -21,14 +21,19 @@ helm version
 
 ```
 helm repo add incubator https://kubernetes-charts-incubator.storage.googleapis.com/
-helm install  --set ui.enabled=true --set expose.type=nodePort --set externalURL=http://127.0.0.1:8080 kubeless incubator/kubeless
+kubectl create namespace kubeless
+helm install --namespace kubeless --set ui.enabled=true \
+--set expose.type=nodePort \
+--set expose.tls.enabled=false \
+--set externalURL=http://127.0.0.1:8080 \
+kubeless incubator/kubeless 
 ```
 
 ### 4. 根据提示，键入以下命令，获取 UI 端口
 
 ```
-export NODE_PORT=$(kubectl get --namespace default -o jsonpath="{.spec.ports[0].nodePort}" services kubeless-kubeless-ui)
-export NODE_IP=$(kubectl get nodes --namespace default -o jsonpath="{.items[0].status.addresses[0].address}")
+export NODE_PORT=$(kubectl get --namespace kubeless -o jsonpath="{.spec.ports[0].nodePort}" services kubeless-kubeless-ui)
+export NODE_IP=$(kubectl get nodes --namespace kubeless -o jsonpath="{.items[0].status.addresses[0].address}")
 echo http://$NODE_IP:$NODE_PORT
 ```
 
