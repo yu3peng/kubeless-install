@@ -21,7 +21,7 @@ helm version
 
 ```
 helm repo add incubator https://kubernetes-charts-incubator.storage.googleapis.com/
-helm install  --set ui.enabled=true kubeless incubator/kubeless
+helm install  --set ui.enabled=true --set expose.type=nodePort --set externalURL=http://127.0.0.1:8080 kubeless incubator/kubeless
 ```
 
 ### 4. 根据提示，键入以下命令，获取 UI 端口
